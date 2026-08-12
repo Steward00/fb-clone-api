@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
         password: hashedPassword,
       },
     });
-    createToken(newUser.id, req, res);
+    let token = createToken(newUser.id, res);
     res.status(201).json({
       message: "User registered successfully",
       user: {
@@ -28,6 +28,7 @@ const registerUser = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
       },
+      token,
     });
   } catch (error) {
     console.error(error);
@@ -48,7 +49,12 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    res.json({ message: "Login successful" });
+    let token = createToken(user.id, res);
+    res.json({
+      message: "Login successful",
+      data: { id: user.id, name: user.name, email: user.email },
+      token,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
