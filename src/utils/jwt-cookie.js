@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
 
 const createToken = (userId, res) => {
   const payload = { id: userId };

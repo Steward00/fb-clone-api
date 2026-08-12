@@ -4,12 +4,12 @@ const commentaire = async (req, res) => {
   try {
     const { content } = req.body;
     const { postId } = req.params;
-    const { authorId } = req.user;
+    const { id } = req.user;
 
     if (!content || !content.trim()) {
       return res.status(400).json({ message: "there is no content to submit" });
     }
-    if (!authorId) {
+    if (!id) {
       return res
         .status(400)
         .json({ message: "you need to be connected to submit a comment" });
@@ -18,8 +18,8 @@ const commentaire = async (req, res) => {
     const comment = await prisma.comment.create({
       data: {
         content: content.trim(),
-        postId: parseInt(postId),
-        authorId: parseInt(authorId),
+        postId: postId,
+        authorId: id,
       },
     });
 
