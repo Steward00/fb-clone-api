@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
         password: hashedPassword,
       },
     });
-    let token = createToken(newUser.id, res);
+    let token = await createToken(newUser.id, res);
     res.status(201).json({
       message: "User registered successfully",
       user: {
@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    let token = createToken(user.id, res);
+    let token = await createToken(user.id, res);
     res.json({
       message: "Login successful",
       data: { id: user.id, name: user.name, email: user.email },
