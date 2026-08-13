@@ -4,7 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 import route from "./routes/auth-route.js";
 import cookieParser from "cookie-parser";
-import CommentRouter from "./routes/comment.route.js";
+import CommentRouter from "./routes/comment-route.js";
 import postRouter from "./routes/post-route.js";
 
 const app = express();
