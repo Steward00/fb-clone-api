@@ -30,4 +30,83 @@ const commentaire = async (req, res) => {
   }
 };
 
-export default commentaire;
+const deleteComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const comment = await prisma.comment.findUnique({
+      where: { id: id },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    if (comment.authorId !== userId) {
+      return res.status(403).json({ message: "Acces denied" });
+    }
+
+    await prisma.comment.delete({
+      where: { id: id },
+    });
+
+    return res.status(200).json({ message: "Your comment is now deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateCommentaire = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const comment = await prisma.comment.findUnique({
+      where: { id: id },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    if (comment.authorId !== userId) {
+      return res.status(403).json({ message: "Acces denied" });
+    }
+
+    const newPost = await prisma.comment.update({
+      where: { id: id },
+      data: {
+        title,
+        content,
+      },
+    });
+
+    res.status(200).json({
+      status: "Succes",
+      data: {
+        newPost,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const allComment = async (req, res) => {
+  try {
+    const allComm = await prisma.comment.findMany();
+    res.status(200).json({
+      status: "Succes",
+      allComm,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export { commentaire, deleteComment, updateCommentaire, allComment };

@@ -13,8 +13,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", route);
-app.use("/api", postRouter);
-app.use("/api", CommentRouter);
+app.use("/api/post", postRouter);
+app.use("/api/comment", CommentRouter);
 
 const PORT = process.env.PORT || 3000;
 
