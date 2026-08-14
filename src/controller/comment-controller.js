@@ -4,7 +4,7 @@ const commentaire = async (req, res) => {
   try {
     const { content } = req.body;
     const { postId } = req.params;
-    const { id } = req.user;
+    const { id, name } = req.user;
 
     if (!content || !content.trim()) {
       return res.status(400).json({ message: "there is no content to submit" });
@@ -17,6 +17,7 @@ const commentaire = async (req, res) => {
 
     const comment = await prisma.comment.create({
       data: {
+        userName: name,
         content: content.trim(),
         postId: postId,
         authorId: id,
@@ -62,6 +63,7 @@ const updateCommentaire = async (req, res) => {
   try {
     const { title, content } = req.body;
     const userId = req.user.id;
+    const userName = req.user.name;
     const { id } = req.params;
 
     const comment = await prisma.comment.findUnique({
@@ -79,6 +81,7 @@ const updateCommentaire = async (req, res) => {
     const newPost = await prisma.comment.update({
       where: { id: id },
       data: {
+        userName,
         title,
         content,
       },
