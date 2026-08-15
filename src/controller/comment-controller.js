@@ -15,9 +15,17 @@ const commentaire = async (req, res) => {
         .json({ message: "you need to be connected to submit a comment" });
     }
 
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
     const comment = await prisma.comment.create({
       data: {
-        userName: name,
+        authorName: name,
         content: content.trim(),
         postId: postId,
         authorId: id,
@@ -61,7 +69,7 @@ const deleteComment = async (req, res) => {
 
 const updateCommentaire = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { content } = req.body;
     const userId = req.user.id;
     const userName = req.user.name;
     const { id } = req.params;
@@ -81,8 +89,7 @@ const updateCommentaire = async (req, res) => {
     const newPost = await prisma.comment.update({
       where: { id: id },
       data: {
-        userName,
-        title,
+        authorName: userName,
         content,
       },
     });

@@ -9,7 +9,7 @@ import { authentification } from "../middleware/auth-middleware.js";
 
 const CommentRouter = Router();
 CommentRouter.get("/", allComment);
-CommentRouter.post("/", authentification, commentaire);
+CommentRouter.post("/:postId", authentification, commentaire);
 CommentRouter.put("/:id", authentification, updateCommentaire);
 CommentRouter.delete("/:id", authentification, deleteComment);
 

@@ -6,6 +6,7 @@ import route from "./routes/auth-route.js";
 import cookieParser from "cookie-parser";
 import CommentRouter from "./routes/comment-route.js";
 import postRouter from "./routes/post-route.js";
+import likeRouter from "./routes/like-route.js";
 
 const app = express();
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use("/api/auth", route);
 app.use("/api/post", postRouter);
 app.use("/api/comment", CommentRouter);
+app.use("/api/like", likeRouter);
 
 const PORT = process.env.PORT || 3000;
 
