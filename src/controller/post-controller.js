@@ -3,7 +3,7 @@ import { prisma } from "../db.js";
 const post = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const { id } = req.user;
+    const { id, name } = req.user;
 
     if (!title || !content) {
       return res
@@ -12,6 +12,7 @@ const post = async (req, res) => {
     }
     const newPost = await prisma.post.create({
       data: {
+        userName: name,
         title,
         content,
         authorId: id,

@@ -96,4 +96,4 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, logout };
+export { registerUser, loginUser, logout, allUser };
