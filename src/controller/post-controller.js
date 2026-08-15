@@ -23,34 +23,44 @@ const post = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 const deletePost = async (req, res) => {
   try {
     const userId = req.user.id;
     const { postId } = req.params;
 
     const post = await prisma.post.findUnique({
-      where: { id: postId },
+      where: {
+        id: postId,
+      },
     });
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({
+        message: "Post not found",
+      });
     }
 
-    if (post.userId !== userId) {
-      return res.status(400).json({ message: "You cannot modify this post" });
+    if (post.authorId !== userId) {
+      return res.status(403).json({
+        message: "You cannot delete this post",
+      });
     }
 
     await prisma.post.delete({
-      where: { id: postId },
+      where: {
+        id: postId,
+      },
     });
 
-    res.status(200).json({
-      message: "Post delete succesfully",
+    return res.status(200).json({
+      message: "Post deleted successfully",
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
+
+    return res.status(500).json({
+      error: "Internal server error",
+    });
   }
 };
 

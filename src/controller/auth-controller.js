@@ -69,4 +69,31 @@ const logout = async (req, res) => {
   res.status(200).json({ message: "Logged out succesfully", status: "succes" });
 };
 
+const deleteAccount = async (req, res) => {
+  try {
+    const id = req.user.id;
+
+    const user = await prisma.user.findUnique({
+      where: { id: id },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (id !== user.id) {
+      return res.status(401).json({ message: "Acces denied" });
+    }
+
+    await prisma.user.delete({
+      where: { id: id },
+    });
+
+    res.status(200).json({ message: "Account deleted succesfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export { registerUser, loginUser, logout };
