@@ -1,19 +1,24 @@
+import { title } from "process";
 import { prisma } from "../db.js";
 
 const post = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { content } = req.body;
+    const image = req.file;
     const { id } = req.user;
 
-    if (!title || !content) {
+    console.log(req.file); // Log the uploaded file information
+    console.log(req.body); // Log the request body
+
+    if (!image || !content) {
       return res
         .status(400)
-        .json({ message: "title and content are required" });
+        .json({ message: "Image and content are required" });
     }
     const newPost = await prisma.post.create({
       data: {
-        title,
         content,
+        image: req.file?.path || null,
         authorId: id,
       },
     });

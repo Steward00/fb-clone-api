@@ -96,25 +96,4 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-const allUser = async (req, res) => {
-  try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-      },
-    });
-
-    res.status(200).json({
-      status: "Succes",
-      users,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-export { registerUser, loginUser, logout, deleteAccount, allUser };
+export { registerUser, loginUser, logout, deleteAccount };

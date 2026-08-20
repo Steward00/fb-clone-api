@@ -17,14 +17,24 @@ model User {
   comments  Comment[]
   likes     Like[]
   posts     Post[]
+  avatars   Avatar[]
+}
+
+model Avatar {
+  id    String  @id @default(uuid())
+  image String?
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
 }
 
 model Post {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  published Boolean   @default(false)
+  id        String  @id @default(uuid())
+  content   String?
+  image     String?
+  published Boolean @default(false)
   authorId  String
+
   createdAt DateTime  @default(now())
   comments  Comment[]
   likes     Like[]
@@ -32,14 +42,13 @@ model Post {
 }
 
 model Comment {
-  id         String   @id @default(uuid())
-  content    String
-  postId     String
-  authorId   String
-  createdAt  DateTime @default(now())
-  authorName String
-  author     User     @relation(fields: [authorId], references: [id])
-  post       Post     @relation(fields: [postId], references: [id])
+  id        String   @id @default(uuid())
+  content   String
+  postId    String
+  authorId  String
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
 }
 
 model Like {

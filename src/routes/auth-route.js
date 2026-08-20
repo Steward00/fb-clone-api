@@ -3,7 +3,6 @@ import {
   registerUser,
   loginUser,
   logout,
-  allUser,
 } from "../controller/auth-controller.js";
 
 const router = Router();
